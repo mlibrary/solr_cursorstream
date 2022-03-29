@@ -5,7 +5,6 @@ require "delegate"
 # Wrapper around a Faraday::Response that provides sugar methods
 # to get solr docs, numFound, and the cursor value
 class Solr::CursorStream::Response < SimpleDelegator
-
   # @param [Faraday::Response] faraday_response
   def initialize(faraday_response)
     super
