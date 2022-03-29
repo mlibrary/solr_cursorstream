@@ -1,6 +1,8 @@
 # Solr::CursorStream
 
-"Stream" results from solr with [cursor-based fetching](https://solr.apache.org/guide/8_6/pagination-of-resultshtml#fetching-a-large-number-of -sorted-results-cursors), exposing the stream as a normal ruby enumerator. 
+"Stream" results from solr with 
+[cursor-based fetching](https://solr.apache.org/guide/8_6/pagination-of-resultshtml#fetching-a-large-number-of-sorted-results-cursors), 
+exposing the stream as a normal ruby enumerator. 
 
 
 Cursor-based streaming allows, with some restrictions, 
