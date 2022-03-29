@@ -3,10 +3,9 @@
 require "solr/cursorstream/version"
 require "solr/cursorstream/response"
 require "faraday"
-require 'faraday/retry'
+require "faraday/retry"
 
 module Solr
-
   # Fetch results from a solr filter query via solr's cursor streaming.
   # https://solr.apache.org/guide/8_6/pagination-of-results.html#fetching-a-large-number-of-sorted-results-cursors
   #
@@ -30,8 +29,8 @@ module Solr
     # @param [Symbol] adapter A valid Faraday adapter. If not using the default, it is up to the
     #    programmer to do whatever `require` calls are necessary.
 
-    def initialize(url:, handler: "select", query: '*:*', filters: ["*:*"], sort: "id asc", batch_size: 100, fields: [], logger: nil, adapter: :httpx)
-      @url = url.gsub(/\/\Z/, '')
+    def initialize(url:, handler: "select", query: "*:*", filters: ["*:*"], sort: "id asc", batch_size: 100, fields: [], logger: nil, adapter: :httpx)
+      @url = url.gsub(/\/\Z/, "")
       @query = query
       @handler = handler
       @filters = filters
@@ -41,7 +40,7 @@ module Solr
       @logger = logger
       @adapter = adapter
 
-      @current_cursor = '*'
+      @current_cursor = "*"
       yield self if block_given?
     end
 
@@ -94,14 +93,15 @@ module Solr
     # @return [Hash] Default solr params derived from instance variables
     def default_params
       field_list = Array(fields).join(",")
-      p = {q: @query, wt: :json, rows: batch_size, sort: sort, fq: filters, fl: field_list}
+      p = {q: @query, wt: :json, rows: batch_size, sort: @sort, fq: filters, fl: field_list}
       p.reject { |_k, v| [nil, "", []].include?(v) }
+      p
     end
 
     # @private
     # Make sure we have everything we need for a successful stream
     def verify_we_have_everything!
-      missing = {handler: handler, filters: filters, batch_size: batch_size}.select { |_k, v| v.nil? }.keys
+      missing = {handler: @handler, filters: @filters, batch_size: @batch_size}.select { |_k, v| v.nil? }.keys
       raise Error.new("Solr::CursorStreamer missing value for #{missing.join(", ")}") unless missing.empty?
     end
 
@@ -115,7 +115,7 @@ module Solr
     # @private
     # @return Lambda that runs every time the connection needs to retry due to http error
     def http_request_retry_block
-      -> (env:, options:, retries_remaining:, exception:, will_retry_in:) do
+      ->(env:, options:, retries_remaining:, exception:, will_retry_in:) do
         # TODO: Logging and such
       end
     end
