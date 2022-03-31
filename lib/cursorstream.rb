@@ -62,12 +62,12 @@ module Solr
     end
 
     # Build up a Faraday connection
-    # @param [Symbol] adapter Which faraday adapter to use.
-    # @return [Faraday] A faraday connection object
-    def connection(adapter: @adapter)
-      return @connection if @connection
+    # @param [Symbol] adapter Which faraday adapter to use. If not :httpx, you must have loaded the
+    # necessary adapter already.
+    # @return [Faraday] A faraday connection object.
+    def self.connection(adapter: :httpx)
       require "httpx/adapters/faraday" if adapter == :httpx
-      @connection = Faraday.new do |builder|
+      Faraday.new do |builder|
         builder.use Faraday::Response::RaiseError
 
         builder.request :url_encoded
@@ -75,6 +75,12 @@ module Solr
         builder.response :json
         builder.adapter @adapter
       end
+    end
+
+    # @see CursorStream.connection
+    def connection(adapter: @adapter)
+      return @connection if @connection
+      @connection = self.class.connection(adapter: @adapter)
     end
 
     # @private
