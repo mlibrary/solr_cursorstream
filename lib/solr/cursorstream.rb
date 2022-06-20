@@ -67,9 +67,8 @@ module Solr
     # @return [Faraday] A faraday connection object.
     def self.connection(adapter: :httpx)
       require "httpx/adapters/faraday" if adapter == :httpx
-      Faraday.new do |builder|
+      conn = Faraday.new(request: { params_encoder: Faraday::FlatParamsEncoder }) do |builder|
         builder.use Faraday::Response::RaiseError
-
         builder.request :url_encoded
         builder.request :retry
         builder.response :json
