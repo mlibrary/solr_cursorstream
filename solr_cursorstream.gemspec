@@ -12,7 +12,6 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/mlibrary/solr_cursorstream"
   spec.license = "MIT"
 
-
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = spec.homepage + "/CHANGELOG.md"
@@ -34,4 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "milemarker"
 
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "standard"
 end

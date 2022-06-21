@@ -26,9 +26,8 @@ module Solr
     # @param [Integer] batch_size How many results to fetch at a time (for efficiency)
     # @param [Array<String>] fields The solr fields to return.
     # @param [Logger, #info] A logger or logger-like object. When set to `nil` will not do any logging.
-    # @param [Symbol] adapter A valid Faraday adapter. If not using the default, it is up to the
+    # @param [Symbol] adapter A valid Faraday adapter. If not using the default httpx, it is up to the
     #    programmer to do whatever `require` calls are necessary.
-
     def initialize(url:, handler: "select", query: "*:*", filters: ["*:*"], sort: "id asc", batch_size: 100, fields: [], logger: nil, adapter: :httpx)
       @url = url.gsub(/\/\Z/, "")
       @query = query
@@ -64,10 +63,10 @@ module Solr
     # Build up a Faraday connection
     # @param [Symbol] adapter Which faraday adapter to use. If not :httpx, you must have loaded the
     # necessary adapter already.
-    # @return [Faraday] A faraday connection object.
+    # @return [Faraday::Connection] A faraday connection object.
     def self.connection(adapter: :httpx)
       require "httpx/adapters/faraday" if adapter == :httpx
-      conn = Faraday.new(request: { params_encoder: Faraday::FlatParamsEncoder }) do |builder|
+      Faraday.new(request: {params_encoder: Faraday::FlatParamsEncoder}) do |builder|
         builder.use Faraday::Response::RaiseError
         builder.request :url_encoded
         builder.request :retry
@@ -121,7 +120,7 @@ module Solr
     # @return Lambda that runs every time the connection needs to retry due to http error
     def http_request_retry_block
       ->(env:, options:, retries_remaining:, exception:, will_retry_in:) do
-        # TODO: Logging and such
+        # TODO: log that a retry happened
       end
     end
   end
