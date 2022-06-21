@@ -18,11 +18,13 @@ downloading large sets of data without the "deep paging"
 out-of-memory problems 
 associated with just using the `start` and `rows` parameters. 
 
-The only significant restrictions is that _the sort specification MUST 
+The only real restriction is that _the sort specification MUST 
 include the`uniqueKey` field_. If you're just downloading a whole dataset and 
 don't care about order, the default query of `*:*` and the default sort of `id asc`
-will be fine (assuming your uniqueKey is `id`). If you want to sort by
-another field/value, you must use the uniqueKey in a secondary sort (e.g., 
+will be fine (assuming your uniqueKey is `id`). 
+
+If you want to sort by
+another field/value, just include the uniqueKey in a secondary sort (e.g., 
 `sort: "score desc, id asc"`) to guarantee a stable sort. 
 
 NOTE that if you don't need the `score` (relevancy) field, 
@@ -81,11 +83,12 @@ end
 
 ## TODO
 
-[ ] Add a :limit option
-[ ] Add a `lucene_escape` utility function
-[ ] Change q/fq to take either a string (as current) or a {field => value} hash
-[ ] Actual error handling, or at least passing useful information along
-[ ] Figure out how to test without a live solr to bounce off of. Maybe use 
+* [ ] Add a `lucene_escape` utility function
+* [ ] Change q/fq to take either a string (as current) or a {field => value}
+ hash
+* [ ] Actual error handling for retries, or at least passing useful 
+  information along
+* [ ] Figure out how to test without a live solr to bounce off of. Maybe use 
 vcr or similar?
 
 ## Installation
@@ -94,6 +97,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'solr_cursorstream'
+# require with require "solr/cursorstream"
 ```
 
 And then execute:
