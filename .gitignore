@@ -6,6 +6,10 @@
 /pkg/
 /spec/reports/
 /tmp/
-
+.tool-versions
+.rbenv
+.rubocop.yml
+*.iml
+.idea/
 # rspec failure tracking
 .rspec_status
