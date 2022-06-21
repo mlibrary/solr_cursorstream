@@ -6,13 +6,16 @@ exposing the stream as a normal ruby enumerator.
 
 Note that this is different from true streaming of results via, e.g.,
 the [default `/export` handler](https://solr.apache.org/guide/8_6/exporting-result-sets.html).
-Those queries can involve more complex processing, but are restricted in 
-that you 
-  * can't use relevancy ranking 
-  * all fields have to be `docValues`. 
+
+Those queries can involve more complex processing, but don't fit all use 
+cases:
+  * `/export` can't use relevancy ranking as a sort; `Solr::CursorStream` can 
+  * `/export` requires all fields have to be `docValues`, 
+    `Solr::CursorStream` doesn't.
 
 Cursor-based streaming allows, with some restrictions, 
-downloading large sets of data without the "deep paging" problems 
+downloading large sets of data without the "deep paging" 
+out-of-memory problems 
 associated with just using the `start` and `rows` parameters. 
 
 The only significant restrictions is that _the sort specification MUST 
