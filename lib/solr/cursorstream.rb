@@ -93,7 +93,6 @@ module Solr
       resp
     end
 
-    # @private
     # @return [Hash] Default solr params derived from instance variables
     def default_params
       field_list = Array(fields).join(",")
